@@ -92,6 +92,7 @@ public class OrderRepository {
         return query.getResultList();
     }
 
+    // 재사용성이 좋다
     public List<Order> findAllWithMemberDelivery() {
         // 페치 조인 (지연로딩 설정이 되어 있더라도, 쿼리를 날릴 때 관련 데이터를 다 가져오도록)
         return em.createQuery(
@@ -100,4 +101,6 @@ public class OrderRepository {
                         " join fetch o.delivery d", Order.class)
                 .getResultList();
     }
+
+
 }
