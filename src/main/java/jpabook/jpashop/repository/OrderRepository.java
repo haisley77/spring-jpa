@@ -92,4 +92,12 @@ public class OrderRepository {
         return query.getResultList();
     }
 
+    public List<Order> findAllWithMemberDelivery() {
+        // 페치 조인 (지연로딩 설정이 되어 있더라도, 쿼리를 날릴 때 관련 데이터를 다 가져오도록)
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class)
+                .getResultList();
+    }
 }
