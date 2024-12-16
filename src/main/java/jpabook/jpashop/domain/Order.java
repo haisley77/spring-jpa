@@ -31,13 +31,6 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    // persist(orderItemA)
-    // persist(orderItemB)
-    // persist(orderItemC)
-    // persist(order)
-
-    // persist(order) -> CascadeType.ALL 적용 시
-
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
