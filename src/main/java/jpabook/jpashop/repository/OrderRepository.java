@@ -103,4 +103,26 @@ public class OrderRepository {
     }
 
 
+    /**
+     * 컬렉션 페치 조인
+     * 페이징을 하면 큰일난다 -> 치명적인 단점
+     * 1개만 사용할 수 있다. 컬렉션 둘 이상에 페치 조인을 사용하면, 데이터가 부정합하게 조회될 수 있다.
+     */
+    public List<Order> findAllWithItem() {
+        // distinct 추가하더라도 DB 쿼리 결과 자체는 중복 제거가 안될 수 있다.
+        // JPA는 엔티티가 중복이면 그 중복을 제거하고 컬렉션에 담아준다.
+        // SpringBoot 3 + Hibernate -> distinct가 자동 적용된다고 한다.
+        return em.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d" +
+                        " join fetch o.orderItems oi" +
+                        " join fetch oi.item i", Order.class)
+//                DB 쿼리에 limit offset을 적용하더라도 우리가 원하는 데이터 페이징이 안될 수도 있다.
+//                그래서 모든 데이터를 애플리케이션 메모리로 끌어올린 다음, 메모리에서 페이징 처리를 하게 된다.
+//                OutOfMemory 에러가 발생할 수 있다.
+//                .setFirstResult(1)
+//                .setMaxResults(10000)
+                .getResultList();
+    }
 }
