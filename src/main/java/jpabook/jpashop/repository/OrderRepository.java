@@ -125,4 +125,20 @@ public class OrderRepository {
 //                .setMaxResults(10000)
                 .getResultList();
     }
+
+
+    // ToOne 관계는 페치 조인해도 페이징에 영향을 주지 않는다.
+    // 따라서 ToOne 관계는 페치 조인으로 쿼리 수를 줄이고 해결하고,
+    // 나머지는 hibernate.default_batch_fetch_size 로 최적화한다.
+    // 쿼리 호출 수가 1 + N -> 1 + 1 로 최적화된다.
+    // size는 100 ~ 1000 사이가 좋지만, DB와 애플리케이션이 순간 부하를 어느 수준까지 견딜 수 있는 지로 결정하면 된다.
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                        "select o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
 }
