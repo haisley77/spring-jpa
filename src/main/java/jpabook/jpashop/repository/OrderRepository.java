@@ -118,9 +118,9 @@ public class OrderRepository {
                         " join fetch o.delivery d" +
                         " join fetch o.orderItems oi" +
                         " join fetch oi.item i", Order.class)
-//                DB 쿼리에 limit offset을 적용하더라도 우리가 원하는 데이터 페이징이 안될 수도 있다.
-//                그래서 모든 데이터를 애플리케이션 메모리로 끌어올린 다음, 메모리에서 페이징 처리를 하게 된다.
-//                OutOfMemory 에러가 발생할 수 있다.
+                // DB 쿼리에 limit offset을 적용하더라도 우리가 원하는 데이터 페이징이 안될 수도 있다.
+                // 그래서 모든 데이터를 애플리케이션 메모리로 끌어올린 다음, 메모리에서 페이징 처리를 하게 된다.
+                // OutOfMemory 에러가 발생할 수 있다.
 //                .setFirstResult(1)
 //                .setMaxResults(10000)
                 .getResultList();
