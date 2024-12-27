@@ -91,7 +91,7 @@ public class OrderApiController {
     public List<OrderQueryDto> ordersV6() {
         // 쿼리는 한 번이지만 조인으로 인해 DB에서 애플리케이션에 전달하는 데이터에 중복 데이터가 추가되므로 상황에 따라 V5보다 더 느릴 수도 있다.
         // 애플리케이션에서 추가 작업이 크다.
-        // 페이징 불가능
+        // orderId 기준으로 페이징 불가능 (모든 데이터를 조인해서 가져오기 때문에, 중복 데이터 row기 많아지기 때문)
         List<OrderFlatDto> flats = orderQueryRepository.findAllByDto_flat();
 
         return flats.stream()
