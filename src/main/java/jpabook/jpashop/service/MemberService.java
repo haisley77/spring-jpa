@@ -40,13 +40,13 @@ public class MemberService {
     }
 
     public Member findOne(Long memberId) {
-        return memberRepository.findOne(memberId);
+        return memberRepository.findById(memberId).get();
     }
 
     @Transactional
     public void update(Long id, String name) {
         // 영속 상태의 member 엔티티 조회
-        Member member = memberRepository.findOne(id);
+        Member member = memberRepository.findById(id).get();
         // 트랜잭션 커밋 시 JPA가 flush할 때 변경 감지
         member.setName(name);
     }
